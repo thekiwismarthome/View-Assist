@@ -1,0 +1,2024 @@
+decluttering_templates:
+  footer_menu:
+    card:
+      type: custom:mushroom-chips-card
+      chips:
+        - type: template
+          tap_action:
+            action: navigate
+            navigation_path: '#menu'
+          icon: mdi:card-outline
+      card_mod:
+        style: |
+          ha-card {
+            border: transparent !important;
+            --chip-background: transparent;
+            z-index: 12;
+            position: fixed;
+            justify-self: center;
+            bottom: 10vh;
+            left: 50%;
+            background-color: transparent !important;
+            border-radius: 25%;
+            padding: 10px;
+          }
+  reminder:
+    card:
+      square: false
+      type: grid
+      cards:
+        - type: conditional
+          conditions:
+            - condition: state
+              entity: sensor.next_rubbish_collection
+              state: rubbish in 1 days
+          card:
+            type: custom:button-card
+            entity_picture: /local/images/rubbish_small.png
+            show_entity_picture: true
+            styles:
+              card:
+                - height: 100px
+                - width: 100px
+                - padding: 0
+                - background: transparent
+                - border-width: 0px
+                - border-radius: 15%
+              icon:
+                - width: 100%
+        - type: conditional
+          conditions:
+            - condition: state
+              entity: sensor.next_recycle_collection
+              state: recycle in 1 days
+          card:
+            type: custom:button-card
+            entity_picture: /local/images/recycling_bin_small.png
+            show_entity_picture: true
+            styles:
+              card:
+                - height: 80px
+                - width: 80px
+                - padding: 0
+                - background: transparent
+                - border-width: 0px
+                - border-radius: 15%
+              icon:
+                - width: 100%
+      columns: 6
+  analogue_clock:
+    card:
+      type: custom:clock-card
+      time_zone: Pacific/Auckland
+      size: 250
+      font_size: 50
+      disable_seconds: true
+      display_date: DDD, DD MMM
+      theme:
+        background: transparent
+        hands: white
+        numbers: white
+        border: transparent
+  menu:
+    card:
+      type: vertical-stack
+      cards:
+        - type: custom:button-card
+          name: menu
+          show_name: false
+          show_icon: true
+          icon: mdi:square-rounded-outline
+          tap_action:
+            action: navigate
+            navigation_path: '#menu'
+          styles:
+            card:
+              - position: fixed
+              - left: calc(50vw - 40px)
+              - justify-self: center
+              - bottom: 2vh
+              - height: 80px
+              - width: 80px
+              - padding: 0
+              - background: transparent
+              - border-width: 0px
+              - border-radius: 50%
+              - box-shadow: >-
+                  inset 0px 4px 8px rgba(0, 0, 0, 0.6), 0px 6px 10px rgba(0, 0,
+                  0, 0.3)
+            icon:
+              - opacity: 0.5
+              - font-size: 40px
+              - color: white
+              - width: 60%
+        - type: vertical-stack
+          cards:
+            - type: custom:bubble-card
+              card_type: pop-up
+              hash: '#menu'
+              margin_top_mobile: calc(100vh - 22vh)
+              margin_top_desktop: calc(100vh - 22vh)
+              show_header: false
+              width_desktop: 40%
+              auto_close: '10000'
+              margin: 7px
+              bg_blur: '50'
+              bg_color: ''
+              shadow_opacity: '0'
+              hide_backdrop: true
+              bg_opacity: '10'
+            - type: horizontal-stack
+              cards:
+                - type: custom:button-card
+                  template:
+                    - menu_template
+                  name: menu
+                  icon: mdi:clock-digital
+                  tap_action:
+                    action: navigate
+                    navigation_path: /dashboard-viewassist/clock
+                - type: custom:button-card
+                  name: menu
+                  template:
+                    - menu_template
+                  icon: mdi:air-conditioner
+                  tap_action:
+                    action: navigate
+                    navigation_path: '#ac'
+                - type: custom:button-card
+                  name: menu
+                  template:
+                    - menu_template
+                  icon: phu:youtube-music
+                  tap_action:
+                    action: navigate
+                    navigation_path: /dashboard-viewassist/music
+                - type: custom:button-card
+                  name: menu
+                  template:
+                    - menu_template
+                  icon: bha:ceiling-downlight
+                  tap_action:
+                    action: navigate
+                    navigation_path: '#2nd-floor-lights'
+        - type: vertical-stack
+          cards:
+            - type: custom:bubble-card
+              card_type: pop-up
+              hash: '#ac'
+              auto_close: '10000'
+              styles: |
+                .bubble-pop-up {
+                  background: radial-gradient(circle, rgba(255,255,255,0.1), rgba(255,255,255,0.1));
+                }
+            - type: thermostat
+              entity: climate.ac_living_room
+              show_current_as_primary: true
+              features:
+                - type: climate-hvac-modes
+        - type: vertical-stack
+          cards:
+            - type: custom:bubble-card
+              card_type: pop-up
+              hash: '#2nd-floor-lights'
+              auto_close: '20000'
+            - type: custom:bubble-card
+              card_type: button
+              sub_button:
+                - entity: light.kitchen_light_left
+                  icon: mdi:light-recessed
+                  show_name: true
+                  name: Kitchen L
+                  show_state: false
+                  tap_action:
+                    action: toggle
+                  hold_action:
+                    action: more-info
+                - entity: light.kitchen_light_right
+                  icon: mdi:light-recessed
+                  show_name: true
+                  name: Kitchen R
+                  show_state: false
+                  tap_action:
+                    action: toggle
+                  hold_action:
+                    action: more-info
+                - entity: light.dining_room_lights
+                  name: Dining
+                  show_name: true
+                  tap_action:
+                    action: toggle
+                  hold_action:
+                    action: more-info
+                  icon: mdi:light-recessed
+              entity: light.kitchen_dining
+              force_icon: true
+              show_state: false
+              tap_action:
+                action: toggle
+            - type: custom:bubble-card
+              card_type: button
+              tap_action:
+                action: toggle
+              entity: light.lounge_dimmer_2
+              icon: bha:ceiling-downlight
+              button_type: slider
+              hold_action:
+                action: more-info
+              card_layout: normal
+              show_attribute: false
+              show_last_changed: false
+              show_state: false
+              force_icon: false
+              show_name: true
+              show_icon: true
+              scrolling_effect: true
+            - type: custom:bubble-card
+              card_type: button
+              card_layout: large
+              sub_button:
+                - entity: light.wled_retaining_wall
+                  name: Retaining Wall
+                  show_name: true
+                  tap_action:
+                    action: toggle
+                  hold_action:
+                    action: more-info
+                - entity: light.wled_path_to_spa
+                  name: Path to Spa
+                  show_name: true
+                  tap_action:
+                    action: toggle
+                  hold_action:
+                    action: more-info
+              entity: light.back_yard
+              tap_action:
+                action: none
+              hold_action:
+                action: none
+              double_tap_action:
+                action: none
+button_card_templates:
+  menu_template:
+    show_name: false
+    show_icon: true
+    styles:
+      card:
+        - height: 80px
+        - width: 80px
+        - padding: 0
+        - background: transparent
+        - border-width: 0px
+        - border-radius: 50%
+        - box-shadow: >-
+            inset 0px 4px 8px rgba(0, 0, 0, 0.6), 0px 6px 10px rgba(0, 0, 0,
+            0.3)
+      icon:
+        - opacity: 0.5
+        - font-size: 40px
+        - color: white
+        - width: 60%
+  variable_template:
+    variables:
+      background: /local/images/viewassist/pinkbluesky.jpg
+      assist_group: group.viewassist_satellites
+      var_weather_entity: weather.home_2
+      font_color: '#FFFFFF'
+      background_color: '#059bf1'
+      use_24_hour_time: false
+      assist_position: 5%
+      assist_height: 10px
+      default_satellite: |-
+        [[[
+          return hass.states[variables.assist_group].attributes.entity_id
+             .find((eid) => hass.states[eid].attributes.type === "view_audio")
+        ]]]
+      var_current_time: |
+        [[[
+          if (variables.use_24_hour_time) {
+            var options = { hour: "2-digit", minute: "2-digit", hour12: false };
+          } else {
+            var options = { hour: "numeric", minute: "2-digit" };      
+          }
+            return new Date().toLocaleTimeString([], options).replace("AM","").replace("PM","").replace("am","").replace("pm","");
+        ]]]
+      var_date_short: |
+        [[[    
+          const options = { weekday: "short", day: "numeric", month: "short", };
+          return new Date().toLocaleDateString([], options);
+        ]]]
+      var_date_long: |
+        [[[
+              const options = { weekday: "long", day: "numeric", month: "long", year: 'numeric' };
+              return new Date().toLocaleDateString([], options)
+        ]]]
+      var_assistsat_entity: |-
+        [[[
+          return hass.states[variables.assist_group].attributes.entity_id
+             .find((eid) => hass.states[eid].attributes.browser_id === localStorage.getItem("browser_mod-browser-id")) ?? variables.default_satellite;
+        ]]]
+      var_assisting: |-
+        [[[
+          var assistbid = hass.states[variables.assist_group].attributes.entity_id
+           .find((eid) => hass.states[eid].attributes.browser_id === localStorage.getItem("browser_mod-browser-id")) ?? variables.default_satellite;
+          var micdevice = hass.states[assistbid].attributes.mic_device;
+          var micstate = hass.states[micdevice].state;
+          var assisting = micstate.includes("start");
+          return `${assisting}`
+        ]]]
+      var_mic_device: |-
+        [[[
+          var assistbid = hass.states[variables.assist_group].attributes.entity_id
+           .find((eid) => hass.states[eid].attributes.browser_id === localStorage.getItem("browser_mod-browser-id")) ?? variables.default_satellite;
+          var micdevice = hass.states[assistbid].attributes.mic_device;
+          var micdevice = micdevice.replace("sensor","switch").replace("stt","mic");      
+          return `${micdevice}`
+        ]]]
+      var_mic_mute: |-
+        [[[
+          var assistbid = hass.states[variables.assist_group].attributes.entity_id
+           .find((eid) => hass.states[eid].attributes.browser_id === localStorage.getItem("browser_mod-browser-id")) ?? variables.default_satellite;
+          var micdevice = hass.states[assistbid].attributes.mic_device;
+          var micdevice = micdevice.replace("sensor","switch").replace("stt","mic");      
+          var micstate = hass.states[micdevice].state;
+          return `${micstate}`
+        ]]]
+      var_mic_switch: |-
+        [[[
+          var assistbid = hass.states[variables.assist_group].attributes.entity_id
+           .find((eid) => hass.states[eid].attributes.browser_id === localStorage.getItem("browser_mod-browser-id")) ?? variables.default_satellite;
+          var micdevice = hass.states[assistbid].attributes.mic_device;
+          var micswitch = micdevice.replace("sensor","switch").replace("stt","mic");      
+          return `${micswitch}`
+        ]]]        
+      var_mediaplayer_device: |-
+        [[[
+          var assistbid = hass.states[variables.assist_group].attributes.entity_id
+           .find((eid) => hass.states[eid].attributes.browser_id === localStorage.getItem("browser_mod-browser-id")) ?? variables.default_satellite;
+          var mediadevice = hass.states[assistbid].attributes.mediaplayer_device;
+          return `${mediadevice}`
+        ]]]        
+      var_mediaplayer_mute: |-
+        [[[
+          var assistbid = hass.states[variables.assist_group].attributes.entity_id
+           .find((eid) => hass.states[eid].attributes.browser_id === localStorage.getItem("browser_mod-browser-id")) ?? variables.default_satellite;
+          var mediadevice = hass.states[assistbid].attributes.mediaplayer_device;
+          var mediaplayerstate = hass.states[mediadevice].attributes.is_volume_muted;
+          return `${mediaplayerstate}`
+        ]]]
+      var_title: '[[[ return states[variables.var_assistsat_entity].attributes.title; ]]]'
+      var_message: >-
+        [[[ return states[variables.var_assistsat_entity].attributes.message;
+        ]]]
+      var_image: '[[[ return states[variables.var_assistsat_entity].attributes.image; ]]]'
+      var_font_size: >-
+        [[[ return
+        states[variables.var_assistsat_entity].attributes.message_font_size; ]]]
+      var_weather_temperature: |-
+        [[[
+          return (states[variables.var_weather_entity].attributes.temperature  + '°');  
+        ]]]      
+      var_weather_icon: |-
+        [[[
+          const weatherIconsDay  = {
+            "clear-night": "mdi:weather-night", 
+            "cloudy": "mdi:weather-cloudy",
+            "dust": "mdi:weather-dust",
+            "fog": "mdi:weather-fog",
+            "hail": "mdi:weather-hail",
+            "hazy": "mdi:weather-hazy", 
+            "hurricane": "mdi:weather-hurricane",
+            "lightning": "mdi:weather-lightning",
+            "lightning-rainy": "mdi:weather-lightning-rainy",
+            "partlycloudy": "mdi:weather-partly-cloudy",
+            "partly-lightning": "mdi:weather-partly-lightning", 
+            "partly-rainy": "mdi:weather-partly-rainy",
+            "partly-snowy": "mdi:weather-partly-snowy", 
+            "partly-snowy-rainy": "mdi:weather-partly-snowy-rainy", 
+            "pouring": "mdi:weather-pouring",
+            "rainy": "mdi:weather-rainy",
+            "snowy": "mdi:weather-snowy",
+            "snowy-heavy": "mdi:weather-snowy-heavy",
+            "snowy-rainy": "mdi:weather-snowy-rainy",
+            "sunny": "mdi:weather-sunny",
+            "tornado": "mdi:weather-tornado",
+            "windy":  "mdi:weather-windy",
+            "windy-variant": "mdi:weather-windy-variant",
+          };
+          const weatherIconsNight = {
+            ...weatherIconsDay,
+            clear: "mdi:weather-night",
+            sunny: "mdi:weather-night",
+            partlycloudy: "mdi:weather-night-partly-cloudy",
+          };
+          var condition = states[variables.var_weather_entity].state;
+          if (states['sun.sun'] === 'above_horizon') {
+            var weather_icon = weatherIconsDay[condition]; 
+          } else {
+            var weather_icon = weatherIconsDay[condition]; 
+          }
+          
+          if (typeof(weather_icon) === 'undefined') { 
+            var weather_icon = "mdi:help" 
+          }   
+          return `${weather_icon}` 
+        ]]]
+      var_background: |
+        [[[
+          return states[variables.var_assistsat_entity].attributes.default_background;
+        ]]]
+  body_template:
+    show_state: false
+    show_icon: false
+    show_name: false
+    triggers_update: all
+    tap_action:
+      action: call-service
+      service: python_script.set_state
+      service_data:
+        entity_id: '[[[ return variables.var_assistsat_entity ]]]'
+        mode: hold
+    double_tap_action:
+      action: call-service
+      service: python_script.set_state
+      service_data:
+        entity_id: '[[[ return variables.var_assistsat_entity ]]]'
+        mode: normal
+    hold_action:
+      action: call-service
+      service: switch.toggle
+      service_data:
+        entity_id: '[[[ return variables.var_mic_switch ]]]'
+    aspect_ratio: 2/1
+    styles:
+      grid:
+        - grid-template-areas: |
+            "title title status status status"  
+            "content content content content content"    
+            "footer1 footer1 assist footer2 footer2"
+            "footer1 footer1 menu footer2 footer2"
+        - grid-template-columns: repeat(5, 1fr);
+        - grid-template-rows: .5fr 4fr .5fr .5fr;
+        - row-gap: .5rem
+        - column-gap: .5rem
+        - height: calc(100vh - 1rem)
+        - width: calc(100vw - 2rem)
+      card:
+        - min-height: 100vh
+        - padding: 0.5rem
+        - background: |
+            [[[
+              if (variables.background != null) {
+                return `center / cover no-repeat url(${variables.background})`
+              } else if (variables.var_background != null) {
+                  return `center / cover no-repeat url(${variables.var_background})`
+              } else { 
+                return `center / cover no-repeat ${variables.background_color}`
+              }
+            ]]]
+        - border-radius: 0px
+        - overflow: hidden
+        - font-family: '"Roboto", sans-serif'
+        - font-weight: 300
+      custom_fields:
+        filter1:
+          - position: absolute
+          - top: 0px
+          - left: 0px
+          - height: 150%
+          - width: 150%
+          - overflow: hidden
+          - z-index: 0
+          - color: transparent
+        filter2:
+          - top: 0px
+          - left: 0px
+          - position: absolute
+          - height: 150%
+          - width: 150%
+          - backdrop-filter: brightness(100%)
+          - overflow: hidden
+          - color: transparent
+          - z-index: 0
+          - animation: >-
+              [[[ if (variables.var_assisting == "true") return "brightness .1s
+              ease-in-out forwards"; else return "" ]]]
+        title:
+          - justify-self: start
+          - align-self: start
+          - z-index: 2
+          - font-size: 10vh
+          - width: max-content
+        status:
+          - align-self: start
+          - z-index: 2
+          - margin: 0px
+        assist:
+          - position: fixed
+          - justify-self: center
+          - z-index: 5
+          - bottom: 15%
+          - animation: >-
+              [[[ if (variables.var_assisting == "true") return "big .1s
+              ease-in-out forwards"; else return "" ]]]
+        menu:
+          - position: fixed
+          - justify-self: center
+          - z-index: 5
+          - bottom: 2%
+    extra_styles: |
+      @keyframes pulse {
+        0%, 100% {
+          background-color: #f56a3f;
+        }
+        50% {
+          background-color: #9e42b0;
+        }
+      }
+      @keyframes big {
+        100% { bottom: 50%; }
+      }
+      @keyframes brightness {
+        100% { backdrop-filter: brightness(50%) blur(10px); z-index:9; }
+      }
+    custom_fields:
+      filter1: .
+      filter2: .
+      footer1:
+        card:
+          type: custom:decluttering-card
+          template: reminder
+      assist:
+        card:
+          type: custom:button-card
+          name: How can I assist?
+          show_icon: true
+          icon: mdi:comment-processing-outline
+          tap_action:
+            action: none
+          styles:
+            card:
+              - height: 0.75vmin
+              - width: 5vmax
+              - border-radius: 500px
+              - padding: 0
+              - border-width: 0px
+              - background: white
+              - transform: translate(0%, 50%)
+              - animation: >-
+                  [[[ if (variables.var_assisting == "true") return "big2 .5s
+                  ease-in-out .2s forwards"; else return "" ]]]
+            grid:
+              - grid-template-areas: '"i n"'
+              - grid-template-columns: 1fr 4fr
+              - grid-template-rows: 1fr
+            icon:
+              - opacity: 0
+              - color: black
+              - width: 50%
+              - animation: >-
+                  [[[ if (variables.var_assisting == "true") return "big3 .75s
+                  ease-in-out .3s forwards"; else return "" ]]]
+            name:
+              - opacity: 0
+              - color: black
+              - justify-self: start
+              - font-size: 7.5vmin
+              - font-weight: bold
+              - animation: >-
+                  [[[ if (variables.var_assisting == "true") return "big3 .75s
+                  ease-in-out .3s forwards"; else return "" ]]]
+          extra_styles: |
+            @keyframes big2 {
+              0%{ height: .75vmin; width: 5vmax }
+              100% {
+                height: 15vmin; width: 55vmax;
+                transform: translate(0%, 50%);
+              }
+            }
+            @keyframes big3 {
+              0% { opacity: 0; }
+              100% {opacity: 1; }
+            }
+      title: '[[[ return variables.var_title ]]]'
+      status:
+        card:
+          type: custom:button-card
+          styles:
+            grid:
+              - grid-template-areas: |
+                  "mediaplayer mic hold dnd"
+              - grid-template-rows: min-content
+              - grid-template-columns: 1fr 1fr 1fr 1fr
+            card:
+              - background-color: transparent
+              - margin: 0px
+              - padding: 0px
+              - border-width: 0px
+            custom_fields:
+              mediaplayer:
+                - position: relative
+                - display: >-
+                    [[[ if (variables.var_mediaplayer_mute === "true") return
+                    "block"; else return "none"; ]]]
+              mic:
+                - position: relative
+                - display: >-
+                    [[[ if (variables.var_mic_mute === "off") return "block";
+                    else return "none"; ]]]
+              hold:
+                - position: relative
+                - display: >-
+                    [[[ if
+                    (hass.states[variables.var_assistsat_entity].attributes.mode
+                    === "hold") return "block"; else return "none";
+                    ]]]                
+              dnd:
+                - position: relative
+                - display: >-
+                    [[[ if
+                    (hass.states[variables.var_assistsat_entity].attributes.do_not_disturb
+                    === true) return "block"; else return "none";
+                    ]]]                                
+          custom_fields:
+            mediaplayer:
+              card:
+                type: custom:button-card
+                icon: mdi:volume-off
+                show_name: false
+                color_type: card
+                styles:
+                  card:
+                    - background-color: transparent
+                    - padding: 0
+                    - border-width: 0px
+                  icon:
+                    - color: '[[[ return variables.font_color ]]]'
+                    - width: 8vmin
+                tap_action:
+                  action: call-service
+                  service: media_player.volume_mute
+                  service_data:
+                    entity_id: '[[[ return variables.var_mediaplayer_device ]]]'
+                    is_volume_muted: false
+            mic:
+              card:
+                type: custom:button-card
+                icon: mdi:microphone-off
+                show_name: false
+                color_type: card
+                styles:
+                  card:
+                    - background-color: transparent
+                    - padding: 0
+                    - border-width: 0px
+                  icon:
+                    - color: '[[[ return variables.font_color ]]]'
+                    - width: 8vmin
+                tap_action:
+                  action: call-service
+                  service: homeassistant.turn_on
+                  service_data:
+                    entity_id: '[[[ return variables.var_mic_device ]]]'
+            hold:
+              card:
+                type: custom:button-card
+                icon: mdi:hand-back-left
+                show_name: false
+                color_type: card
+                styles:
+                  card:
+                    - background-color: transparent
+                    - padding: 0
+                    - border-width: 0px
+                  icon:
+                    - color: '[[[ return variables.font_color ]]]'
+                    - width: 8vmin
+                tap_action:
+                  action: call-service
+                  service: python_script.set_state
+                  service_data:
+                    mode: normal
+                    entity_id: '[[[ return variables.var_assistsat_entity ]]]'
+            dnd:
+              card:
+                type: custom:button-card
+                icon: mdi:minus-circle
+                show_name: false
+                color_type: card
+                styles:
+                  card:
+                    - background-color: transparent
+                    - padding: 0
+                    - border-width: 0px
+                  icon:
+                    - color: '[[[ return variables.font_color ]]]'
+                    - width: 8vmin
+                tap_action:
+                  action: call-service
+                  service: python_script.set_state
+                  service_data:
+                    do_not_disturb: false
+                    entity_id: '[[[ return variables.var_assistsat_entity ]]]'
+kiosk_mode:
+  user_settings:
+    - users:
+        - brent
+      ignore_entity_settings: true
+  entity_settings:
+    - entity:
+        input_boolean.kiosk_hide_header_and_sidebar: 'on'
+      hide_sidebar: true
+      hide_header: true
+    - entity:
+        input_boolean.kiosk_hide_header_and_sidebar: 'off'
+      hide_sidebar: false
+      hide_header: false
+views:
+  - title: clock
+    path: clock
+    type: panel
+    cards:
+      - type: vertical-stack
+        cards:
+          - type: custom:button-card
+            template:
+              - variable_template
+              - body_template
+            custom_fields:
+              title:
+                card:
+                  type: custom:button-card
+                  icon: '[[[ return variables.var_weather_icon ]]]'
+                  name: '[[[ return variables.var_weather_temperature ]]]'
+                  tap_action:
+                    action: navigate
+                    navigation_path: /dashboard-viewassist/weather
+                  styles:
+                    card:
+                      - background-color: transparent
+                      - padding: 0px
+                      - border-width: 0px
+                      - text-shadow: 0px 0px 10px rgba(0,0,0,0.3);
+                    grid:
+                      - grid-template-areas: '"i n"'
+                      - grid-template-rows: 1fr
+                      - grid-template-columns: 7vh 1fr
+                    name:
+                      - color: '[[[ return variables.font_color ]]]'
+                      - font-size: 10vh
+                      - line-height: 1
+                    img_cell:
+                      - align-self: start
+                      - text-align: start
+                      - align-items: start
+                    icon:
+                      - color: '[[[ return variables.font_color ]]]'
+                      - margin: 0 1vh 0 0
+                      - width: 100%
+                      - height: auto
+                      - filter: drop-shadow(0px 0px 10px rgba(0,0,0,0.3));
+              content:
+                card:
+                  type: custom:button-card
+                  tap_action:
+                    action: none
+                  styles:
+                    grid:
+                      - grid-template-areas: |
+                          "time"
+                          "date"
+                      - grid-template-rows: min-content min-content
+                    card:
+                      - background: '[[[ return `transparent` ]]]'
+                      - background-size: cover
+                      - border-width: 0px
+                      - text-shadow: 0px 0px 10px rgba(0,0,0,0.3);
+                    custom_fields:
+                      time:
+                        - z-index: 2
+                        - font-size: 35vw
+                        - font-weight: bold
+                        - line-height: 0.9
+                        - text-shadow: 0px 0px 10px rgba(0,0,0,0.3);
+                        - color: '[[[ return variables.font_color ]]]'
+                      date:
+                        - z-index: 2
+                        - font-size: 10vw
+                        - height: 100%
+                        - line-height: 1
+                        - text-shadow: 0px 0px 10px rgba(0,0,0,0.3);
+                        - color: '[[[ return variables.font_color ]]]'
+                  custom_fields:
+                    time:
+                      card:
+                        type: custom:analog-clock
+                        hide_secondHand: false
+                        hide_date: true
+                        hide_weekday: true
+                        locale: nz-AU
+                        diameter: 450
+                        color_hourhand: white
+                        color_minutehand: white
+                        color_secondhand: black
+                        color_digitaltime: white
+                        color_facedigits: white
+                        color_ticks: white
+                        color_text: black
+                        style_hourhand: 1
+                        style_minutehand: 1
+                        color_background: rgba(0,0,0,0)
+                        card_mod:
+                          style: |
+                            ha-card {
+                              background: rgba(0,0,0,0);
+                            }
+                    date: '[[[ return variables.var_date_short ]]]'
+                    night: .
+          - type: custom:decluttering-card
+            template: menu
+          - type: custom:decluttering-card
+            template: reminder
+    icon: mdi:clock-digital
+  - title: weather
+    path: weather
+    icon: mdi:weather-sunny-alert
+    type: panel
+    background: '[[[ return variables.var_weather_image ]]]'
+    cards:
+      - type: vertical-stack
+        cards:
+          - type: custom:button-card
+            variables:
+              var_forecast_entity: weather.home
+              var_forecast_type: daily
+              weathercardversion: 1.0.2
+            template:
+              - variable_template
+              - body_template
+            styles:
+              grid:
+                - grid-template-areas: |
+                    "title status"  
+                    "message message"
+                    "assist assist"        
+                - grid-template-rows: min-content max-content min-content
+                - grid-template-columns: 1fr 1fr
+              card:
+                - background: >-
+                    [[[ return `center / cover no-repeat
+                    url(${variables.background})` ]]]
+                - background-size: cover
+                - border-width: 0px
+                - border-radius: 0px
+              custom_fields:
+                content:
+                  - position: relative
+                  - height: 100vh
+                  - text-align: start
+                  - text-wrap: wrap
+                  - justify-content: center
+                  - align-self: center
+                  - padding: '-10%'
+            custom_fields:
+              title: ''
+              message:
+                card:
+                  type: weather-forecast
+                  entity: '[[[ return variables.var_forecast_entity ]]]'
+                  forecast_type: '[[[ return variables.var_forecast_type ]]]'
+                  card_mod:
+                    style:
+                      .: |
+                        ha-card { background: transparent }
+                        ha-card.type-weather-forecast {
+                          justify-content: start !important;
+                        }
+                        ha-card.type-weather-forecast>div.content {
+                          div {
+                            padding-top: 0px;
+                          }
+                        }
+                        ha-card.type-weather-forecast>div.content {
+                          display: flex;​
+                        }
+                      ha-card.type-weather-forecast>div.content: |
+                        svg {
+                          width: 15vw !important;
+                          height: 15vh !important;
+                          flex: unset !important;
+                        }
+                      ha-card.type-weather-forecast>div.forecast: |
+                        div {
+                          padding-top: 2vh;
+                          font-size: 6vh;
+                          justify-content: space-evenly !important;
+                        }
+                      ha-card.type-weather-forecast>div.content>div.info:
+                        .: |
+                          div.name-state {
+                            display: flex;
+                            flex-direction: column;
+                          }
+                        div.name-state:
+                          .: |
+                            div.state {
+                              font-size: 10vh !important;
+                            }
+                            div.name {
+                              display: none;
+                              max-height: 0px !important;
+                            }
+                        div.temp-attribute: |
+                          .temp {
+                            font-size: 8vh !important;
+                            padding-bottom: 0px;
+                          }
+                          .attribute {
+                            font-size: 5vh !important;
+                            color:  #e1e1e1 !important;
+                          }  
+                          .temp span {
+                            font-size: 7vh !important;
+                            margin-left: -1vh;
+                          }
+                          .templow {
+                            padding-top: 0px;
+                            color: #e1e1e1 !important;
+                            text-align: right;
+                          }
+          - type: custom:decluttering-card
+            template: menu
+  - title: list
+    path: list
+    type: panel
+    icon: mdi:clipboard-list
+    cards:
+      - type: vertical-stack
+        cards:
+          - type: custom:button-card
+            variables:
+              listcardversion: 1.0.1
+              var_list: >-
+                [[[ try {return
+                hass.states[variables.var_assistsat_entity].attributes.list}
+                catch {return "todo.shopping_list"}]]]
+            template:
+              - variable_template
+              - body_template
+            styles:
+              card:
+                - background: >-
+                    [[[ return `center / cover no-repeat
+                    url(${variables.background})` ]]]
+                - background-size: cover
+            custom_fields:
+              content:
+                card:
+                  type: todo-list
+                  entity: '[[[ return variables.var_list ]]]'
+                  card_mod:
+                    style:
+                      .: |
+                        ha-card {
+                          background-color: transparent;
+                          box-shadow: none;
+                          border: none;
+                          position: absolute;
+                          top: 15vh;
+                        }
+                        ha-check-list-item {
+                          color: white;
+                          font-size: 3vw;
+                          line-height: 1.6;
+                        }
+                        ha-card.type-todo-list div.header {
+                          display: none;
+                        }
+                        ha-card.type-todo-list .addRow {
+                          display: none;
+                        }
+                        ha-card.type-todo-list div.divider {
+                          display: none;
+                        }
+                        ha-check-list-item.editRow.completed {
+                          display: none;
+                        }
+          - type: custom:decluttering-card
+            template: menu
+  - title: music
+    path: music
+    type: panel
+    icon: phu:youtube-music
+    cards:
+      - type: vertical-stack
+        cards:
+          - type: custom:button-card
+            variables:
+              musiccardversion: 1.0.0
+              var_musicplayer_device: |-
+                [[[
+                  var assistbid = hass.states[variables.assist_group].attributes.entity_id
+                   .find((eid) => hass.states[eid].attributes.browser_id === localStorage.getItem("browser_mod-browser-id")) ?? variables.default_satellite;
+                  var musicdevice = hass.states[assistbid].attributes.musicplayer_device;
+                  return `${musicdevice}`
+                ]]]   
+            template:
+              - variable_template
+              - body_template
+            styles:
+              card:
+                - background-color: black;
+              custom_fields:
+                content:
+                  - font-size: '[[[ return variables.var_font_size ]]]'
+                  - position: relative
+                  - justify-content: center
+                  - justify-self: center
+                  - padding: 10px
+                  - border-radius: 15px
+                  - border: none
+                  - text-align: start
+                  - text-wrap: wrap
+                  - align-self: bottom
+                  - padding: 2%
+                  - top: '-5vh'
+            custom_fields:
+              title: ''
+              content:
+                card:
+                  type: custom:mod-card
+                  card:
+                    type: media-control
+                    name: ' '
+                    entity: '[[[ return variables.var_musicplayer_device ]]]'
+                  style: |
+                    ha-card {
+                      width: 95vw !important;
+                      height: 85vh !important;
+                      margin: 0 !important;
+                      padding: 0 !important;
+                      box-shadow: none !important;
+                      --paper-card-background-color: transparent !important;
+                    }
+          - type: custom:decluttering-card
+            template: menu
+  - title: intent
+    path: intent
+    icon: mdi:account
+    type: panel
+    cards:
+      - type: vertical-stack
+        cards:
+          - type: custom:button-card
+            template:
+              - variable_template
+              - body_template
+            styles:
+              card:
+                - background: >-
+                    [[[ return `center / cover no-repeat
+                    url(${variables.background})` ]]]
+                - background-size: cover
+                - background-color: '#000000'
+                - border-width: 0px
+                - border-radius: 0px
+              custom_fields:
+                message:
+                  - position: relative
+                  - width: 100%
+                  - align-self: middle
+                  - justify-self: center
+            custom_fields:
+              title: ''
+              content:
+                card:
+                  type: custom:layout-card
+                  layout_type: custom:masonry-layout
+                  layout:
+                    max_cols: 3
+                  cards: >-
+                    [[[ try {return
+                    hass.states[variables.var_assistsat_entity].attributes.intent_entities}
+                    catch { return ""}]]]
+          - type: custom:decluttering-card
+            template: menu
+  - title: webpage
+    path: webpage
+    icon: mdi:web
+    type: panel
+    cards:
+      - type: vertical-stack
+        cards:
+          - type: custom:button-card
+            variables:
+              var_url: >-
+                [[[ try {return
+                hass.states[variables.var_assistsat_entity].attributes.data["url"]}
+                catch { return "https://www.home-assistant.io/"}]]]
+              webpageversion: 1.0.0
+            template:
+              - variable_template
+              - body_template
+            styles:
+              card:
+                - background-color: '#00000'
+                - border-width: 0px
+                - border-radius: 0px
+              custom_fields:
+                content:
+                  - position: relative
+                  - width: 100%
+                  - text-align: start
+                  - text-wrap: wrap
+                  - justify-content: center
+                  - align-self: center
+            custom_fields:
+              content:
+                card:
+                  type: iframe
+                  url: '[[[ return variables.var_url ]]]'
+                  aspect_ratio: 50%
+          - type: custom:decluttering-card
+            template: menu
+  - title: door bell
+    path: door-bell
+    type: panel
+    icon: mdi:doorbell-video
+    cards:
+      - type: vertical-stack
+        cards:
+          - type: custom:button-card
+            variables:
+              cameracardversion: 1.0.1
+              var_camera: >-
+                [[[ try {return
+                hass.states[variables.var_assistsat_entity].attributes.camera}
+                catch { return  ""}]]]
+            template:
+              - variable_template
+              - body_template
+            styles:
+              card:
+                - background: >-
+                    [[[ return `center / cover no-repeat
+                    url(${variables.background})` ]]]
+                - background-size: cover
+            custom_fields:
+              title: >-
+                [[[ try {return
+                hass.states[variables.var_camera].attributes.friendly_name}
+                catch {return ""}]]]
+              content:
+                card:
+                  type: custom:frigate-card
+                  menu:
+                    style: none
+                  cameras:
+                    - camera_entity: >-
+                        [[[ try {return
+                        hass.states[variables.var_assistsat_entity].attributes.camera}
+                        catch {return ""}]]]
+                      live_provider: ha
+                  dimensions:
+                    max_height: 100vh
+                    max_wdith: 100vw
+          - type: custom:decluttering-card
+            template: menu
+  - title: alarm
+    path: alarm
+    icon: mdi:alarm
+    type: panel
+    cards:
+      - type: vertical-stack
+        cards:
+          - type: custom:button-card
+            variables:
+              background: /local/viewassist/Samples/ziyao-xiong-TSh4_IYjHRc-unsplash.jpg
+              var_alarm_name: |-
+                [[[
+                  var assistbid = hass.states[variables.assist_group].attributes.entity_id
+                    .find((eid) => hass.states[eid].attributes.browser_id === localStorage.getItem("browser_mod-browser-id")) ?? variables.default_satellite;
+                  var alarm_name = hass.states[assistbid].attributes.alarm_name;
+                  try {return `${alarm_name}`;} catch { return  ""}
+                ]]] 
+            template:
+              - variable_template
+              - body_template
+            styles:
+              grid:
+                - grid-template-areas: |
+                    "title status"
+                    "alarm_name alarm_name"
+                    "time time"
+                    "snooze dismiss"
+                    "assist assist"
+                - grid-template-rows: .5fr min-content min-content min-content min-content
+                - grid-template-columns: 1fr 1fr
+              card:
+                - background-size: cover
+                - background-color: '#24292c'
+              custom_fields:
+                alarm_name:
+                  - justify-self: center
+                  - z-index: 2
+                  - font-size: 10vh
+                  - position: grid
+                  - color: white
+                  - align-content: end
+                time:
+                  - justify-self: center
+                  - z-index: 2
+                  - font-size: 45vh
+                  - font-weight: bold
+                  - position: grid
+                  - color: white
+                snooze:
+                  - justify-self: center
+                  - align-self: center
+                  - z-index: 1
+                  - font-size: 15vh
+                  - width: max-content
+                  - position: grid
+                  - top: 70%
+                dismiss:
+                  - justify-self: center
+                  - align-self: center
+                  - z-index: 1
+                  - font-size: 15vh
+                  - width: max-content
+                  - position: grid
+                  - top: 70%
+                night:
+                  - position: absolute
+                  - min-height: 200%
+                  - width: 200%
+                  - backdrop-filter: brightness(5%)
+                  - overflow: hidden
+                  - display: >-
+                      [[[ if
+                      (hass.states[variables.var_assistsat_entity].attributes.mode
+                      === "night") return "block"; else return "none"; ]]]      
+                  - z-index: 3
+            custom_fields:
+              title: ' '
+              alarm_name: '[[[ return variables.var_alarm_name ]]]'
+              time: '[[[ return variables.var_current_time ]]]'
+              snooze:
+                card:
+                  type: custom:button-card
+                  name: Snooze
+                  show_icon: false
+                  show_name: true
+                  tap_action:
+                    action: call-service
+                    service: python_script.set_state
+                    service_data:
+                      alarm: snooze
+                      mode: normal
+                      entity_id: '[[[ return variables.var_assistsat_entity ]]]'
+                  styles:
+                    card:
+                      - display: flex
+                      - justify-content: center
+                      - align-items: center
+                      - width: 30vw
+                      - height: 10vh
+                      - border-radius: 5vw
+                      - border: none
+                      - background-color: white
+                    name:
+                      - font-size: 5vh
+                      - color: black
+                      - font-weight: bold
+                      - text-align: center
+              dismiss:
+                card:
+                  type: custom:button-card
+                  name: Dismiss
+                  show_icon: false
+                  show_name: true
+                  tap_action:
+                    action: call-service
+                    service: python_script.set_state
+                    service_data:
+                      alarm: idle
+                      mode: normal
+                      entity_id: '[[[ return variables.var_assistsat_entity ]]]'
+                  styles:
+                    card:
+                      - display: flex
+                      - justify-content: center
+                      - align-items: center
+                      - width: 30vw
+                      - height: 10vh
+                      - border-radius: 5vh
+                      - color: white
+                      - border: none
+                      - background-color: '#2899f3'
+                    name:
+                      - font-size: 5vh
+                      - color: white
+                      - font-weight: bold
+                      - text-align: center
+              night: .
+          - type: custom:decluttering-card
+            template: menu
+  - title: test
+    path: test
+    animated_background: weather
+    cards:
+      - entity: weather.home
+        type: weather-forecast
+        forecast_type: daily
+      - type: todo-list
+        entity: todo.mealie_groceries
+        card_mod:
+          style:
+            .: |
+              ha-card {
+                background-color: transparent;
+                box-shadow: none;
+                border: none;
+                position: absolute;
+                top: 15vh;
+              }
+              ha-check-list-item {
+                color: white;
+                font-size: 3vw;
+                line-height: 1.6;
+              }
+              ha-card.type-todo-list div.header {
+                display: none;
+              }
+              ha-card.type-todo-list .addRow {
+                display: none;
+              }
+              ha-card.type-todo-list div.divider {
+                display: none;
+              }
+              ha-check-list-item.editRow.completed {
+                display: none;
+              }
+      - type: custom:maxi-media-player
+        sections:
+          - player
+          - volumes
+          - groups
+          - grouping
+          - media browser
+        mediaBrowserItemsPerRow: 5
+        entities:
+          - view
+          - media_player.viewassist_wall_pad_snapcast_client
+          - media_player.viewassist_phone_snapcast_client
+      - type: vertical-stack
+        cards:
+          - type: custom:bubble-card
+            card_type: pop-up
+            hash: '#ac'
+            styles: |
+              .bubble-pop-up {
+                background: radial-gradient(circle, rgba(63,94,251,0.1), 255,255,255,0.1) );
+              }
+            name: ''
+            bg_color: ''
+          - type: thermostat
+            entity: climate.ac_living_room
+            show_current_as_primary: true
+            features:
+              - type: climate-hvac-modes
+      - type: vertical-stack
+        cards:
+          - type: custom:bubble-card
+            card_type: pop-up
+            hash: '#menu'
+            margin_top_mobile: calc(100vh - 20vh)
+            margin_top_desktop: calc(100vh - 20vh)
+            show_header: false
+            width_desktop: 100%
+            auto_close: '10000'
+            margin: 7px
+            bg_blur: '50'
+            bg_color: ''
+            shadow_opacity: '0'
+            hide_backdrop: true
+            bg_opacity: '10'
+          - type: custom:bubble-card
+            card_type: horizontal-buttons-stack
+            styles: |
+              ha-card {
+                  border-radius: 20px;
+              }
+              .bubble-icon-container {
+                background: rgb(230, 128, 41);
+              }
+              .bubble-button-background { 
+                  background-color: black !important;
+                  opacity: 1 !important;
+                }
+              .bubble-button-card-container {
+                border-radius: 10px !important;
+                background: none;
+              }
+              .bubble-sub-button-icon {
+                --mdc-icon-size: 10px !important;
+              }
+            is_sidebar_hidden: true
+            1_link: /dashboard-viewassist/clock
+            1_icon: mdi:clock-digital
+            2_link: '#ac'
+            2_icon: mdi:air-conditioner
+            3_link: /dashboard-viewassist/music
+            3_icon: phu:youtube-music
+            4_link: /dashboard-viewassist/lights
+            4_icon: bha:ceiling-downlight
+            highlight_current_view: false
+          - type: horizontal-stack
+            cards:
+              - type: custom:button-card
+                name: menu
+                show_name: false
+                show_icon: true
+                icon: mdi:clock-digital
+                tap_action:
+                  action: navigate
+                  navigation_path: /dashboard-viewassist/clock
+                styles:
+                  card:
+                    - height: 80px
+                    - width: 80px
+                    - padding: 0
+                    - background: transparent
+                    - border-width: 0px
+                    - border-radius: 50%
+                    - box-shadow: >-
+                        inset 0px 4px 8px rgba(0, 0, 0, 0.6), 0px 6px 10px
+                        rgba(0, 0, 0, 0.3)
+                  icon:
+                    - opacity: 0.5
+                    - font-size: 40px
+                    - color: white
+                    - width: 60%
+              - type: custom:button-card
+                name: menu
+                show_name: false
+                show_icon: true
+                icon: mdi:air-conditioner
+                tap_action:
+                  action: navigate
+                  navigation_path: '#ac'
+                styles:
+                  card:
+                    - height: 80px
+                    - width: 80px
+                    - padding: 0
+                    - background: transparent
+                    - border-width: 0px
+                    - border-radius: 50%
+                    - box-shadow: >-
+                        inset 0px 4px 8px rgba(0, 0, 0, 0.6), 0px 6px 10px
+                        rgba(0, 0, 0, 0.3)
+                  icon:
+                    - opacity: 0.5
+                    - font-size: 40px
+                    - color: white
+                    - width: 60%
+              - type: custom:button-card
+                name: menu
+                show_name: false
+                show_icon: true
+                icon: phu:youtube-music
+                tap_action:
+                  action: navigate
+                  navigation_path: /dashboard-viewassist/music
+                styles:
+                  card:
+                    - height: 80px
+                    - width: 80px
+                    - padding: 0
+                    - background: transparent
+                    - border-width: 0px
+                    - border-radius: 50%
+                    - box-shadow: >-
+                        inset 0px 4px 8px rgba(0, 0, 0, 0.6), 0px 6px 10px
+                        rgba(0, 0, 0, 0.3)
+                  icon:
+                    - opacity: 0.5
+                    - font-size: 40px
+                    - color: white
+                    - width: 60%
+              - type: custom:button-card
+                name: menu
+                show_name: false
+                show_icon: true
+                icon: bha:ceiling-downlight
+                tap_action:
+                  action: navigate
+                  navigation_path: /dashboard-viewassist/lights
+                styles:
+                  card:
+                    - height: 80px
+                    - width: 80px
+                    - padding: 0
+                    - background: transparent
+                    - border-width: 0px
+                    - border-radius: 50%
+                    - box-shadow: >-
+                        inset 0px 4px 8px rgba(0, 0, 0, 0.6), 0px 6px 10px
+                        rgba(0, 0, 0, 0.3)
+                  icon:
+                    - opacity: 0.5
+                    - font-size: 40px
+                    - color: white
+                    - width: 60%
+      - type: vertical-stack
+        cards:
+          - type: custom:bubble-card
+            card_type: pop-up
+            hash: '#menu'
+            margin_top_mobile: calc(100vh - 20vh)
+            margin_top_desktop: calc(100vh - 20vh)
+            show_header: false
+            width_desktop: 100%
+            auto_close: '10000'
+            margin: 7px
+            bg_blur: '50'
+            bg_color: ''
+            shadow_opacity: '0'
+            hide_backdrop: true
+            bg_opacity: '10'
+          - type: horizontal-stack
+            cards:
+              - type: custom:button-card
+                template:
+                  - menu_template
+                name: menu
+                icon: mdi:clock-digital
+                tap_action:
+                  action: navigate
+                  navigation_path: /dashboard-viewassist/clock
+              - type: custom:button-card
+                name: menu
+                template:
+                  - menu_template
+                icon: mdi:air-conditioner
+                tap_action:
+                  action: navigate
+                  navigation_path: '#ac'
+              - type: custom:button-card
+                name: menu
+                template:
+                  - menu_template
+                icon: phu:youtube-music
+                tap_action:
+                  action: navigate
+                  navigation_path: /dashboard-viewassist/music
+              - type: custom:button-card
+                name: menu
+                template:
+                  - menu_template
+                icon: bha:ceiling-downlight
+                tap_action:
+                  action: navigate
+                  navigation_path: /dashboard-viewassist/lights
+      - type: custom:atomic-calendar-revive
+        name: Calendar
+        enableModeChange: true
+        entities:
+          - entity: calendar.va_alarm
+            name: Va alarm
+      - initial_view: listWeek
+        type: calendar
+        entities:
+          - calendar.va_alarm
+        title: Current Alarms
+      - square: true
+        type: grid
+        cards:
+          - type: conditional
+            conditions:
+              - condition: state
+                entity: sensor.next_rubbish_collection
+                state: rubbish in 1 days
+            card:
+              type: picture
+              image: local/images/rubbish_small.png
+          - type: conditional
+            conditions:
+              - condition: state
+                entity: sensor.next_recycle_collection
+                state: recycle in 1 days
+            card:
+              type: picture
+              image: local/images/recycling_bin_small.png
+        columns: 2
+      - square: true
+        type: grid
+        cards:
+          - type: custom:button-card
+            variables:
+              musiccardversion: 1.0.0
+              var_musicplayer_device: |-
+                [[[
+                  var assistbid = hass.states[variables.assist_group].attributes.entity_id
+                   .find((eid) => hass.states[eid].attributes.browser_id === localStorage.getItem("browser_mod-browser-id")) ?? variables.default_satellite;
+                  var musicdevice = hass.states[assistbid].attributes.musicplayer_device;
+                  return `${musicdevice}`
+                ]]]
+            styles:
+              card:
+                - background-color: black;
+              custom_fields:
+                content:
+                  - font-size: '[[[ return variables.var_font_size ]]]'
+                  - position: relative
+                  - justify-content: center
+                  - padding: 10px
+                  - border-radius: 10px
+                  - text-align: start
+                  - text-wrap: wrap
+                  - align-self: bottom
+                  - padding: 2%
+                  - top: '-5vh'
+            custom_fields:
+              title: ''
+              content:
+                card:
+                  type: custom:mod-card
+                  card:
+                    type: media-control
+                    name: ' '
+                    entity: '[[[ return variables.var_musicplayer_device ]]]'
+        columns: 4
+      - square: true
+        type: grid
+        cards:
+          - type: custom:button-card
+            tap_action:
+              action: perform-action
+              perform_action: mass.play_media
+              target:
+                entity_id: media_player.viewassist_ella_snapcast_2
+              data:
+                media_type: playlist
+                media_id: My Little Pony
+                enqueue: replace
+          - show_name: true
+            show_icon: true
+            type: button
+            tap_action:
+              action: perform-action
+              perform_action: mass.play_media
+              target: {}
+              data:
+                media_type: playlist
+                media_id: My Little Pony
+            entity: media_player.viewassist_ella_snapcast_2
+          - show_name: true
+            show_icon: true
+            type: button
+            tap_action:
+              action: perform-action
+              perform_action: mass.play_media
+              target:
+                entity_id: media_player.viewassist_ella_snapcast_2
+              data:
+                media_type: playlist
+                media_id: My Little Pony
+                enqueue: replace
+            name: My Little Pony
+            icon: mdi:horse
+        columns: 3
+    background:
+      image: /local/images/viewassist/pinkbluesky.jpg
+  - title: admin
+    path: admin
+    icon: mdi:cog
+    type: sections
+    sections:
+      - type: grid
+        cards:
+          - type: entities
+            entities:
+              - entity: input_boolean.kiosk_hide_header_and_sidebar
+            state_color: true
+            visibility:
+              - condition: user
+                users:
+                  - a245ab0285fd46ebb0d33407e83d1d90
+          - type: conditional
+            conditions: []
+            card: {}
+      - type: grid
+        cards:
+          - type: custom:button-card
+            name: menu
+            show_name: false
+            show_icon: true
+            icon: mdi:square-rounded-outline
+            tap_action:
+              action: fire-dom-event
+              browser_mod:
+                service: browser_mod.popup
+                data:
+                  title: Menu
+                  content:
+                    type: custom:bubble-card
+                    card_type: horizontal-buttons-stack
+                    1_name: ''
+                    1_icon: mdi:clock-digital
+                    1_link: /dashboard-viewassist/clock
+                    2_link: /dashboard-viewassist/weather
+                    2_name: ''
+                    2_icon: mdi:sun-compass
+                    3_name: ''
+                    3_link: /dashboard-viewassist/music
+                    3_icon: phu:youtube-music
+            styles:
+              card:
+                - height: 80px
+                - width: 80px
+                - padding: 0
+                - background: transparent
+                - border-width: 0px
+                - border-radius: 50%
+                - box-shadow: >-
+                    inset 0px 4px 8px rgba(0, 0, 0, 0.6), 0px 6px 10px rgba(0,
+                    0, 0, 0.3)
+              icon:
+                - opacity: 0.5
+                - font-size: 40px
+                - color: white
+                - width: 80%
+    visible:
+      - user: a245ab0285fd46ebb0d33407e83d1d90
+    cards: []
+  - title: Lights
+    path: lights
+    icon: mdi:home-lightbulb-outline
+    type: sections
+    sections:
+      - type: grid
+        cards:
+          - type: vertical-stack
+            cards:
+              - type: custom:bubble-card
+                card_type: button
+                sub_button:
+                  - entity: light.kitchen_light_left
+                    icon: mdi:light-recessed
+                    show_name: true
+                    name: Kitchen L
+                    show_state: false
+                    tap_action:
+                      action: toggle
+                    hold_action:
+                      action: more-info
+                  - entity: light.kitchen_light_right
+                    icon: mdi:light-recessed
+                    show_name: true
+                    name: Kitchen R
+                    show_state: false
+                    tap_action:
+                      action: toggle
+                    hold_action:
+                      action: more-info
+                  - entity: light.dining_room_lights
+                    name: Dining
+                    show_name: true
+                    tap_action:
+                      action: toggle
+                    hold_action:
+                      action: more-info
+                    icon: mdi:light-recessed
+                entity: light.kitchen_dining
+                force_icon: true
+                show_state: false
+                tap_action:
+                  action: toggle
+              - type: custom:bubble-card
+                card_type: button
+                tap_action:
+                  action: toggle
+                entity: light.lounge_dimmer_2
+                icon: bha:ceiling-downlight
+                button_type: slider
+                hold_action:
+                  action: more-info
+                card_layout: normal
+                show_attribute: false
+                show_last_changed: false
+                show_state: false
+                force_icon: false
+                show_name: true
+                show_icon: true
+                scrolling_effect: true
+              - type: custom:bubble-card
+                card_type: button
+                card_layout: large
+                sub_button:
+                  - entity: light.wled_retaining_wall
+                    name: Retaining Wall
+                    show_name: true
+                    tap_action:
+                      action: toggle
+                    hold_action:
+                      action: more-info
+                  - entity: light.wled_path_to_spa
+                    name: Path to Spa
+                    show_name: true
+                    tap_action:
+                      action: toggle
+                    hold_action:
+                      action: more-info
+                entity: light.back_yard
+                tap_action:
+                  action: none
+                hold_action:
+                  action: none
+                double_tap_action:
+                  action: none
+              - type: custom:bubble-card
+                card_type: button
+                tap_action:
+                  action: toggle
+                entity: light.ellas_bedside_lamp
+                icon: cil:table-cylinder-lamp
+                button_type: slider
+                hold_action:
+                  action: more-info
+              - type: custom:bubble-card
+                card_type: button
+                tap_action:
+                  action: toggle
+                entity: light.paiges_bedside_lamp
+                icon: cil:table-cylinder-lamp
+                button_type: slider
+                hold_action:
+                  action: more-info
+              - type: grid
+                cards:
+                  - show_name: true
+                    show_icon: true
+                    type: button
+                    tap_action:
+                      action: toggle
+                    entity: light.paiges_bedside_lamp
+                    icon: phu:yeelight-beside-lamp
+                  - show_name: true
+                    show_icon: true
+                    type: button
+                    tap_action:
+                      action: toggle
+                    entity: light.ellas_bedside_lamp
+                    icon: phu:yeelight-beside-lamp
+              - type: grid
+                cards:
+                  - show_name: true
+                    show_icon: true
+                    type: button
+                    tap_action:
+                      action: toggle
+                    entity: switch.light_kitchen_and_dining_room_switch_2
+                    icon: mdi:light-recessed
+                    name: Kitchen L
+                  - show_name: true
+                    show_icon: true
+                    type: button
+                    tap_action:
+                      action: toggle
+                    entity: switch.light_kitchen_and_dining_room_switch_1
+                    icon: mdi:light-recessed
+                    name: Kitchen R
+                  - show_name: true
+                    show_icon: true
+                    type: button
+                    tap_action:
+                      action: toggle
+                    entity: switch.light_kitchen_and_dining_room_switch_3
+                    icon: mdi:light-recessed
+                    name: Dining Room
+              - type: custom:mushroom-light-card
+                entity: light.lounge_dimmer_2
+                show_brightness_control: true
+              - type: custom:bubble-card
+                card_type: button
+                sub_button:
+                  - entity: light.kitchen_light_left
+                    icon: mdi:light-recessed
+                    show_name: true
+                    name: Kitchen L
+                    show_state: false
+                    tap_action:
+                      action: toggle
+                    hold_action:
+                      action: more-info
+                  - entity: light.kitchen_light_right
+                    icon: mdi:light-recessed
+                    show_name: true
+                    name: Kitchen R
+                    show_state: false
+                    tap_action:
+                      action: toggle
+                    hold_action:
+                      action: more-info
+                  - entity: light.dining_room_lights
+                    name: Dining
+                    show_name: true
+                    tap_action:
+                      action: toggle
+                    hold_action:
+                      action: more-info
+                entity: light.kitchen_dining
+                force_icon: true
+                show_state: false
+                tap_action:
+                  action: toggle
+                card_layout: large
+            layout_options:
+              grid_columns: 4
+              grid_rows: auto
+      - type: grid
+        cards:
+          - type: vertical-stack
+            cards:
+              - type: custom:bubble-card
+                card_type: pop-up
+                hash: '#2nd-floor-lights'
+              - type: custom:bubble-card
+                card_type: button
+                sub_button:
+                  - entity: light.kitchen_light_left
+                    icon: mdi:light-recessed
+                    show_name: true
+                    name: Kitchen L
+                    show_state: false
+                    tap_action:
+                      action: toggle
+                    hold_action:
+                      action: more-info
+                  - entity: light.kitchen_light_right
+                    icon: mdi:light-recessed
+                    show_name: true
+                    name: Kitchen R
+                    show_state: false
+                    tap_action:
+                      action: toggle
+                    hold_action:
+                      action: more-info
+                  - entity: light.dining_room_lights
+                    name: Dining
+                    show_name: true
+                    tap_action:
+                      action: toggle
+                    hold_action:
+                      action: more-info
+                    icon: mdi:light-recessed
+                entity: light.kitchen_dining
+                force_icon: true
+                show_state: false
+                tap_action:
+                  action: toggle
+              - type: custom:bubble-card
+                card_type: button
+                tap_action:
+                  action: toggle
+                entity: light.lounge_dimmer_2
+                icon: bha:ceiling-downlight
+                button_type: slider
+                hold_action:
+                  action: more-info
+                card_layout: normal
+                show_attribute: false
+                show_last_changed: false
+                show_state: false
+                force_icon: false
+                show_name: true
+                show_icon: true
+                scrolling_effect: true
+              - type: custom:bubble-card
+                card_type: button
+                card_layout: large
+                sub_button:
+                  - entity: light.wled_retaining_wall
+                    name: Retaining Wall
+                    show_name: true
+                    tap_action:
+                      action: toggle
+                    hold_action:
+                      action: more-info
+                  - entity: light.wled_path_to_spa
+                    name: Path to Spa
+                    show_name: true
+                    tap_action:
+                      action: toggle
+                    hold_action:
+                      action: more-info
+                entity: light.back_yard
+                tap_action:
+                  action: none
+                hold_action:
+                  action: none
+                double_tap_action:
+                  action: none
